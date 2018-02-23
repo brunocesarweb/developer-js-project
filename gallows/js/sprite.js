@@ -42,5 +42,9 @@ var createSprite = function(selector) {
         $el.addClass(frames[current]);
     
         // adicionou isFinihed no objeto retornado
-        return { nextFrame: nextFrame, reset: reset, isFinished: isFinished };
+        return { 
+            nextFrame: nextFrame, 
+            reset: reset, 
+            isFinished: isFinished 
+        };
     }
