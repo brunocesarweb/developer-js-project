@@ -1,25 +1,29 @@
-//Implementação do ECMAScript 6
-
-//Quando a function tiver 1 parametro não é necessário usar o () como arrow function
-//O atributo const é usado quando seu valor não sofre alteração, o let é uma variável de escopo
-/*
-Conceitos introduzidos: const, let, arrow functions
-*/
-
-const criaJogo = sprite => {
+var criaJogo = function (sprite) {
     
-    let etapa = 1;
-    let lacunas = [];
-    let palavraSecreta = '';
+    var etapa = 1;
+    var lacunas = [];
+    var palavraSecreta = '';
 
-    //Algumas functions podem ser resumidas
-    const ganhou = () => !lacunas.some(lacuna => lacuna == '');
+    var ganhou = function(){
 
-    const perdeu = () => sprite.isFinished();
+        //A função some irá returnar true ou false, caso alguma lacuna esteja vazia ele para de varrer o array e retorna false
+        return lacunas.length
+        ? !lacunas.some(function(lacuna){
+            return lacuna == '';
+        })
+        : false;
+    };
 
-    const ganhouOuPerdeu = () => ganhou() || perdeu();
+    var perdeu = function () {
+        
+        return sprite.isFinished();
+    };
+
+    var ganhouOuPerdeu = function(){
+        return ganhou() || perdeu();
+    };
     
-    const reinicia = () => {
+    var reinicia = function(){
 
         etapa = 1;
         lacunas = [];
@@ -27,7 +31,7 @@ const criaJogo = sprite => {
         sprite.reset();
     };
 
-    const processaChute = chute => {
+    var processaChute = function(chute){
 
         if (!chute.trim()) throw Error('Chute inválido');
 
@@ -47,19 +51,22 @@ const criaJogo = sprite => {
     }; 
 
     // adiciona uma lacuna em branco para cada letra da palavraSecreta
-    const criaLacunas = () => {
-        for (let i = 0; i < palavraSecreta.length; i++) {
-            lacunas.push('');
-        }
+    var criaLacunas = function () {
+        // for (let i = 0; i < palavraSecreta.length; i++) {
+        //     lacunas.push('');
+        // }
         //Outra forma de criar lacunas
-        //lacunas = Array(palavraSecreta.length).fill('');
+        lacunas = Array(palavraSecreta.length).fill('');
     };
 
     // muda o estado da variável etapa para indicar a próxima e última etapa
-    const proximaEtapa = () => etapa = 2;
+    var proximaEtapa = function () {
+
+        etapa = 2;
+    };
 
     // guarda a palavra secreta, cria as lacunas e vai para a próxima etapa
-    const setPalavraSecreta = palavra =>  {
+    var setPalavraSecreta = function (palavra) {
 
         if( !palavra.trim()) throw Error('Palavra secreta inválida');
         palavraSecreta = palavra;
@@ -68,25 +75,30 @@ const criaJogo = sprite => {
     };
 
     // única maneira de termos acesso às lacunas fora da função `criaJogo()`
-    const getLacunas = () => lacunas;
+    var getLacunas = function () {
+
+        return lacunas;
+    };
 
     // permite consultar em qual etapa o jogo se encontra
-    const getEtapa = () => etapa;
+    var getEtapa = function () {
+
+        return etapa;
+    };
 
     /* 
     Tornou acessível apenas as funções que fazem sentido serem chamadas por quem utilizar nosso jogo. 
         A função `proximaEtapa()` é de uso interno e só foi criada para melhorar a legibilidade e manutenção do código, a 
         mesma coisa para a função `criaLacunas()`. 
-    */ 
-    //No return como é um objeto com chave e valor com o mesmo nome omite-se o ": nomeValor"   
+    */    
     return {
-        setPalavraSecreta,
-        getLacunas,
-        getEtapa,
-        processaChute,
-        ganhou,
-        perdeu,
-        ganhouOuPerdeu,
-        reinicia
+        setPalavraSecreta: setPalavraSecreta, 
+        getLacunas: getLacunas,
+        getEtapa: getEtapa,
+        processaChute: processaChute,
+        ganhou: ganhou,
+        perdeu: perdeu,
+        ganhouOuPerdeu: ganhouOuPerdeu,
+        reinicia: reinicia
     }
 };
